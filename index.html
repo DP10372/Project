@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine's Card 💕</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Brush Script MT', cursive, 'Segoe Script', sans-serif;
+    background: linear-gradient(135deg,#ffd6e8,#ffe5f0,#ffd6e8);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    position:relative;
+}
+
+/* HEART BORDER */
+.hearts-border{
+    position:absolute;
+    top:15px;
+    width:100%;
+    text-align:center;
+    font-size:22px;
+    color:#ff9ec4;
+}
+
+/* FLOATING HEARTS */
+.floating-heart{
+    position:absolute;
+    font-size:28px;
+    opacity:.6;
+    animation: float 6s infinite ease-in-out;
+}
+
+.heart-1{ top:10%; right:8%; animation-delay:0s;}
+.heart-2{ top:60%; right:5%; animation-delay:2s;}
+
+@keyframes float{
+    0%,100%{ transform:translateY(0) rotate(0);}
+    50%{ transform:translateY(-20px) rotate(10deg);}
+}
+
+/* BLOBS */
+.blob{
+    position:absolute;
+    border-radius:50%;
+    opacity:.3;
+}
+
+.blob1{
+    width:200px;height:200px;
+    background: radial-gradient(circle,#ffb3d9,transparent);
+    bottom:-50px;left:-50px;
+}
+
+.blob2{
+    width:150px;height:150px;
+    background: radial-gradient(circle,#ffc4e1,transparent);
+    top:20%;left:5%;
+}
+
+/* CONTENT */
+.container{
+    text-align:center;
+    z-index:2;
+    position:relative;
+    padding:20px;
+}
+
+.card{
+    display:none;
+}
+
+.card.active{
+    display:block;
+}
+
+/* IMAGE */
+.dog-img{
+    width:200px;
+    height:200px;
+    border-radius:15px;
+    object-fit:cover;
+    box-shadow:0 10px 30px rgba(255,105,180,.3);
+    margin-bottom:20px;
+}
+
+/* TEXT */
+.main-text{
+    font-size:48px;
+    color:#d4447e;
+    margin-bottom:30px;
+    line-height:1.3;
+    text-shadow:2px 2px 4px rgba(255,182,193,.5);
+}
+
+/* BUTTONS */
+.buttons{
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    margin-top:20px;
+}
+
+.btn{
+    padding:15px 40px;
+    font-size:18px;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.3s;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+.yes{
+    background:linear-gradient(135deg,#ff1493,#ff69b4);
+    color:white;
+}
+
+.yes:hover{
+    transform:translateY(-3px);
+}
+
+.no{
+    background:white;
+    color:#d4447e;
+    border:2px solid #ff69b4;
+}
+
+/* GALLERY */
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:20px;
+}
+
+.gallery img{
+    width:100%;
+    border-radius:12px;
+}
+
+/* CONFETTI */
+.celebration{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    pointer-events:none;
+    z-index:1000;
+}
+
+@keyframes fall{
+    to{ transform:translateY(100vh) rotate(360deg);}
+}
+
+.confetti{
+    position:absolute;
+    width:10px;height:10px;
+    animation:fall 3s linear;
+}
+
+@media(max-width:768px){
+    .main-text{ font-size:32px;}
+    .buttons{ flex-direction:column;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts-border">♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡ ♡</div>
+<div class="floating-heart heart-1">💕</div>
+<div class="floating-heart heart-2">💗</div>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<div class="container">
+
+    <!-- PAGE 1 -->
+    <div class="card active" id="question">
+        <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&h=400&fit=crop" class="dog-img">
+        <div class="main-text">
+            RAJ, will you be my <br> 💕 Valentine?
+        </div>
+        <div class="buttons">
+            <button class="btn yes" onclick="celebrate()">Absolutely 💕</button>
+            <button class="btn no" id="noBtn">Ummm...👑</button>
+        </div>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div class="card" id="celebrationPage">
+        <div class="main-text">I KNEW YOU LOVE ME ❤️</div>
+        <button class="btn yes" onclick="showGallery()">View Memories 📸</button>
+    </div>
+
+    <!-- PAGE 3 -->
+    <div class="card" id="galleryPage">
+        <div class="main-text">Our Memories 💖</div>
+        <div class="gallery">
+            <img src="/images/Screenshot (32).png">
+            <img src="/images/Screenshot (33).png">
+            <img src="/images/Screenshot (34).png">
+            <img src="/images/Screenshot (35).png">
+            <img src="/images/Screenshot (36).png">
+            <img src="/images/Screenshot (37).png">
+            <img src="/images/Screenshot (38).png">
+        </div>
+    </div>
+
+</div>
+
+<div class="celebration" id="confetti"></div>
+
+<script>
+
+/* YES BUTTON */
+function celebrate(){
+    document.getElementById('question').classList.remove('active');
+    document.getElementById('celebrationPage').classList.add('active');
+
+    const colors=['#ff69b4','#ff1493','#ffc0cb','#ff91c9','#ffb3d9'];
+    const confetti=document.getElementById('confetti');
+
+    for(let i=0;i<100;i++){
+        const c=document.createElement('div');
+        c.className='confetti';
+        c.style.left=Math.random()*100+'%';
+        c.style.top='-10px';
+        c.style.background=colors[Math.floor(Math.random()*colors.length)];
+        c.style.animationDuration=(Math.random()*2+2)+'s';
+        confetti.appendChild(c);
+        setTimeout(()=>c.remove(),4000);
+    }
+}
+
+/* GALLERY */
+function showGallery(){
+    document.getElementById('celebrationPage').classList.remove('active');
+    document.getElementById('galleryPage').classList.add('active');
+}
+
+/* RUNAWAY NO BUTTON */
+const noBtn = document.getElementById("noBtn");
+
+function moveButton() {
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+}
+
+/* Desktop */
+noBtn.addEventListener("mouseenter", moveButton);
+
+/* Mobile */
+noBtn.addEventListener("touchstart", function(e) {
+    e.preventDefault();
+    moveButton();
+});
+
+</script>
+
+</body>
+</html>
